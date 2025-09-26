@@ -15,7 +15,7 @@ mensagens = [
 			 SystemMessage(content="Você é um especialista em astrofísica."),
 			 HumanMessage(content="Qual a distancia do sol até a terra?"),
 			 AIMessage(content="O Sol está a 49.600.000 km de distância da Terra."),
-			 HumanMessage(content="E a distância da terra até marte?"),
+			 HumanMessage(content="E a distância da terra até marte? diga somente o valor numerico sem explicação"),
 ]
 
 # Forma 2 de escrever:
