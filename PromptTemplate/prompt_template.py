@@ -1,5 +1,7 @@
 from langchain.prompts import PromptTemplate
 
+user_question = "como posso criar uma lista o mais perfomatica possivel?"
+
 # USING CLASS + FORMAT to bind data
 prompt_template_1 = PromptTemplate(
     input_variables=["especialidade", "area", "linguagem", "pergunta"],
@@ -9,7 +11,7 @@ prompt_template_1 = PromptTemplate(
         {pergunta}
     """
 )
-prompt_template_1 = prompt_template_1.format(especialidade="engenheiro de software", area="desenvolvimento de software", linguagem="python", pergunta=pergunta)
+prompt_template_1 = prompt_template_1.format(especialidade="engenheiro de software", area="desenvolvimento de software", linguagem="python", pergunta=user_question)
 print(prompt_template_1)
 
 # USING FROM TEMPLATE METHOD
@@ -17,4 +19,4 @@ prompt_template_2 = PromptTemplate.from_template("""Você é um {especialidade},
         Pergunta: \n
         {pergunta}
     """)
-print(prompt_template_2.invoke({"especialidade" : "engenheiro de software", "area":"desenvolvimento de software", "linguagem":"python", "pergunta":pergunta}))
+print(prompt_template_2.invoke({"especialidade" : "engenheiro de software", "area":"desenvolvimento de software", "linguagem":"python", "pergunta":user_question}))
