@@ -21,7 +21,7 @@ class Rota(BaseModel):
     pergunta_user: str = Field(description="Colocar neste parametro a pergunta do usuário sem alterá-la.")
 
 
-parser = PydanticOutputParser(pydantic_object=Rota)
+output_parser = PydanticOutputParser(pydantic_object=Rota)
 
 sys_prompt_rota = """Você é um especialista em classificação. Você receberá perguntas do usuário e precisará classificar, \
 de forma booleana, se o usuário está solicitando conversar com um atendente humano ou não.
@@ -30,14 +30,14 @@ Pergunta Usuário: {pergunta_user}"
 """
 
 rota_prompt_template = ChatPromptTemplate([("system", sys_prompt_rota),],
-                                          partial_variables={"format_instructions": parser.get_format_instructions()}
+                                          partial_variables={"format_instructions": output_parser.get_format_instructions()}
                                           )
 
 # criando o pedaço da chain que controla o roteamento entre as branches
-chain_de_roteamento = rota_prompt_template | model | parser
+input_to_router = rota_prompt_template | model | output_parser
 
 # Se quiser testar a cadeia intermediária de roteamento:
-# result = chain_de_roteamento.invoke({"pergunta_user": "Quero falar com um humano"})
+# result = input_to_router.invoke({"pergunta_user": "Quero falar com um humano"})
 
 # --------------------------------------------------------------------------------------------------------------
 
@@ -80,12 +80,12 @@ def executa_roteamento(entrada: Rota):
         return "Atendimento redirecionado para um humano. Favor aguardar alguns minutos que já vamos te atender!"
     else:
         print(f"Opção classe Pydantic: {entrada.opcao} (Atendimento Chatbot)")
-        return   RunnableLambda(lambda x: {"pergunta_user": x.pergunta_user}) | chain_chatbot
+        return   RunnableLambda(lambda entrada: {"pergunta_user": entrada.pergunta_user}) | chain_chatbot
 
 # --------------------------------------------------------------------------------------------------------------
 
 # Crie a cadeia final usando LangChain Expression Language (LCEL)
-chain = chain_de_roteamento | RunnableLambda(executa_roteamento)
+chain = input_to_router | RunnableLambda(executa_roteamento)
 
 # --------------------------------------------------------------------------------------------------------------
 
