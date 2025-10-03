@@ -1,7 +1,8 @@
-from langchain_core.documents import Document
-from langchain_text_splitters import CharacterTextSplitter, MarkdownHeaderTextSplitter
+# pylint: disable=missing-module-docstring, invalid-name
 
-text = """
+from langchain_text_splitters import MarkdownHeaderTextSplitter
+
+prompt_start = """
 ### O que é Inteligência Artificial  
 A inteligência artificial (IA) é um ramo da tecnologia que busca criar sistemas capazes de simular a inteligência humana. Por meio de algoritmos e modelos avançados, a IA consegue aprender com dados, identificar padrões e tomar decisões, muitas vezes superando a capacidade humana em velocidade e precisão. Esse campo tem sido a base de inovações que já estão presentes no dia a dia de milhões de pessoas.  
 
@@ -12,11 +13,11 @@ Nos últimos anos, a IA evoluiu de forma acelerada, impulsionada pelo poder comp
 Apesar do seu enorme potencial, a IA também traz desafios que precisam ser enfrentados, como a preservação da privacidade, a transparência dos algoritmos e o impacto sobre empregos tradicionais. É essencial estabelecer um uso ético e responsável dessa tecnologia, garantindo que seus benefícios sejam distribuídos de forma justa. O futuro da IA dependerá da capacidade da sociedade em equilibrar inovação com responsabilidade social.  
 """
 
-original_text = Document(page_content=text)
+# original_text = Document(page_content=prompt_start)
 
 # print(original_text.page_content)
 
-docs = [original_text]
+# docs = [original_text]
 
 # print(docs)
 
@@ -28,7 +29,7 @@ text_splitter = MarkdownHeaderTextSplitter(
     ]
 )
 
-spliched_docs = text_splitter.split_text(text)
+spliched_docs = text_splitter.split_text(prompt_start)
 
 i = 0
 for doc in spliched_docs:
